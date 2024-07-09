@@ -1,0 +1,23 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 12px;
+}
+
+body {
+    height: 100vh;
+    background-color: mediumvioletred;
+    background-image: linear-gradient(300deg, darkmagenta, deeppink, orange, gold);
+    background-repeat: no-repeat;
+}
+
+h1 {
+    text-align: center;
+    font-size: 4rem;
+    font-family: sans-serif;
+    color: yellow;
+}
