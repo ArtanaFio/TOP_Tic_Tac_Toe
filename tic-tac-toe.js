@@ -27,6 +27,14 @@ const gameboardModule = (function() {
             }
         }
     }
+
+    // method to check for win and tie conditions
+    function checkWinTie(row, column, symbol) {
+        //if () {
+            //console.log(``);
+        //s}
+
+    }
     
     // turns the method getGameboard() into an object, 
     // which the user can access outside the IIFE by calling the method
@@ -38,15 +46,11 @@ const gameboardModule = (function() {
     };
 })();
 // method call: IIFEobject.methodOfObject() to show the gameboard in the console
-let grid = gameboardModule.getGameboard();
 console.log("Gameboard array:");
-console.log(grid);
+console.log(gameboardModule.getGameboard());
 gameboardModule.insertSymbols(1, 1, 'X');
 console.log("Gameboard array after inserting 'X' in the middle:");
-console.log(grid);
-
-
-
+console.log(gameboardModule.getGameboard());
 
 
 // Factory function to create player objects
@@ -60,10 +64,8 @@ const createPlayer = (name, symbol) => {
     };
     return player;
 };
-const player1 = createPlayer("Elsie", "O");
-const player2 = createPlayer("Robert", "X");
-console.log(`Player 1: ${player1.detail()}`);
-console.log(`Player 2: ${player2.detail()}`);
+console.log(`Player 1: ${createPlayer("Elsie", "O").detail()}`);
+console.log(`Player 2: ${createPlayer("Robert", "X").detail()}`);
 
 // IIFE to create the game flow controller object and methods to track players' turn, validate moves, check for win/tie conditions, handle game reset
 const gameControllerModule = (function(){
