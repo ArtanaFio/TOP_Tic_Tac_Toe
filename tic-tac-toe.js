@@ -13,14 +13,14 @@ const gameboardModule = (function() {
         return gameboard;
     }
     
-    // method to insert player symbols into the gameboard
     function insertSymbols(row, column, symbol) {
-        // define gameboard spaces using rows and columns based on the array's indices: array[row][column]
+        
         if (row >= 0 && row < gameboard.length) {
             if (column >= 0 && column < gameboard[row].length) {
                 if (gameboard[row][column] === "") {
-                    // to insert the symbol, use splice()
-                    gameboard[row].splice(column, 1, symbol);
+                    gameboard[row][column] = symbol;
+                    if (checkWinTie(symbol)) {
+                    }; 
                 } else {
                     console.log(`row ${row}, column ${column} is already filled. Choose another space`);
                 }
@@ -28,28 +28,43 @@ const gameboardModule = (function() {
         }
     }
 
-    // method to check for win and tie conditions
-    function checkWinTie(row, column, symbol) {
-        //if () {
-            //console.log(``);
-        //s}
+    function checkWinTie(symbol) {
+        if ((gameboard[0][0] === symbol && gameboard[0][1] === symbol && gameboard[0][2] === symbol) || 
+        (gameboard[1][0] === symbol && gameboard[1][1] === symbol && gameboard[1][2] === symbol) || 
+        (gameboard[2][0] === symbol && gameboard[2][1] === symbol && gameboard[2][2] === symbol) || 
+        (gameboard[0][0] === symbol && gameboard[1][0] === symbol && gameboard[2][0] === symbol) || 
+        (gameboard[0][1] === symbol && gameboard[1][1] === symbol && gameboard[2][1] === symbol) || 
+        (gameboard[0][2] === symbol && gameboard[1][2] === symbol && gameboard[2][2] === symbol) || 
+        (gameboard[0][0] === symbol && gameboard[1][1] === symbol && gameboard[2][2] === symbol) || 
+        (gameboard[0][2] === symbol && gameboard[1][1] === symbol && gameboard[2][0] === symbol)) {
+            console.log(`${symbol} wins!`);
+            return true;
+        } 
 
+        let tie = true;
+        for (let row = 0; row < gameboard.length; row++) {
+            for (let column = 0; column < gameboard[row].length; column++) {
+                if (gameboard[row][column] === "") {
+                    tie = false;
+                    break;
+                }
+            }
+            if (!tie) break;
+        }
+        if (tie) {
+            console.log("It's a tie");
+            return true;
+        }
+
+        return false;
     }
     
-    // turns the method getGameboard() into an object, 
-    // which the user can access outside the IIFE by calling the method
-    // using gameboardModule.getGameboard()
-    // this ultimately allows access to the current state of the gameboard
     return {
         getGameboard: getGameboard,
-        insertSymbols: insertSymbols
+        insertSymbols: insertSymbols,
     };
 })();
-// method call: IIFEobject.methodOfObject() to show the gameboard in the console
 console.log("Gameboard array:");
-console.log(gameboardModule.getGameboard());
-gameboardModule.insertSymbols(1, 1, 'X');
-console.log("Gameboard array after inserting 'X' in the middle:");
 console.log(gameboardModule.getGameboard());
 
 
