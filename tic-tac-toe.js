@@ -20,6 +20,7 @@ const gameboardModule = (function() {
                 if (gameboard[row][column] === "") {
                     gameboard[row][column] = symbol;
                     if (checkWinTie(symbol)) {
+                        gameControllerModule.setGameOver(true);
                     }; 
                 } else {
                     console.log(`row ${row}, column ${column} is already filled. Choose another space`);
@@ -37,7 +38,7 @@ const gameboardModule = (function() {
         (gameboard[0][2] === symbol && gameboard[1][2] === symbol && gameboard[2][2] === symbol) || 
         (gameboard[0][0] === symbol && gameboard[1][1] === symbol && gameboard[2][2] === symbol) || 
         (gameboard[0][2] === symbol && gameboard[1][1] === symbol && gameboard[2][0] === symbol)) {
-            console.log(`${symbol} wins!`);
+            console.log(`${gameControllerModule.getCurrentPlayer().name} wins!`);
             return true;
         } else {
             console.log("keep playing the game");
@@ -67,8 +68,6 @@ const gameboardModule = (function() {
     };
 })();
 
-
-// Factory function to create player objects
 const createPlayer = (name, symbol) => {
     const player = {
         name: name,
@@ -84,7 +83,6 @@ let grid = gameboardModule.getGameboard(); // remove later
 
 // IIFE to create the game flow controller object and methods to track players' turn, validate moves, check for win/tie conditions, handle game reset
 const gameControllerModule = (function(){
-    // track players' turn and switch turns between player
     const playerOne = createPlayer("Elsie", "O");
     const playerTwo = createPlayer("Robert", "X");
 
@@ -93,13 +91,18 @@ const gameControllerModule = (function(){
 
     let currentPlayer = playerOne;
     let toggle = false;
+    let gameOver = false;
 
     function getCurrentPlayer() {
         return currentPlayer;
     }
 
     function switchPlayers(row, column) {
-        // toggle to switch players
+        if (gameOver) {
+            console.log('Game over, no more moves');
+            return;
+        }
+
         console.log(`${currentPlayer.name} is playing this turn`);
         if (gameboardModule.getGameboard()[row][column] === '') {
             gameboardModule.insertSymbols(row, column, currentPlayer.symbol);
@@ -109,19 +112,18 @@ const gameControllerModule = (function(){
         } else {
             console.log(`You cannot make that move, choose a new space, ${currentPlayer.name}`);
         }
-        
     }
 
-    // need to deactivate the insertSymbols method once the win or tie conditions are met
+    function setGameOver(value) {
+        gameOver = value;
+    }
+
     return {
         getCurrentPlayer: getCurrentPlayer,
-        switchPlayers: switchPlayers
+        switchPlayers: switchPlayers,
+        setGameOver: setGameOver
     };
 })();
 
 console.log(`${gameControllerModule.getCurrentPlayer().name} is playing first`);
 console.log(grid);
-
-// validate move
-// check win/tie conditions
-// game reset
