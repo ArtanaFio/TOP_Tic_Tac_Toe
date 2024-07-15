@@ -99,13 +99,20 @@ const gameControllerModule = (function(){
     }
 
     function switchPlayers(row, column) {
-        // toggle boolean to switch players
-        gameboardModule.insertSymbols(row, column, currentPlayer.symbol);
-        currentPlayer = toggle ? playerOne : playerTwo;
-        toggle = !toggle;
-        console.log(`${currentPlayer.name} is playing the next turn`);
+        // toggle to switch players
+        console.log(`${currentPlayer.name} is playing this turn`);
+        if (gameboardModule.getGameboard()[row][column] === '') {
+            gameboardModule.insertSymbols(row, column, currentPlayer.symbol);
+            currentPlayer = toggle ? playerOne : playerTwo;
+            toggle = !toggle;
+            console.log(`${currentPlayer.name} is playing the next turn`);
+        } else {
+            console.log(`You cannot make that move, choose a new space, ${currentPlayer.name}`);
+        }
+        
     }
 
+    // need to deactivate the insertSymbols method once the win or tie conditions are met
     return {
         getCurrentPlayer: getCurrentPlayer,
         switchPlayers: switchPlayers
