@@ -1,6 +1,8 @@
 // Use factory functions as much as possible
 // Use IIFE for single instance: gameboard, displayController
 
+
+
 // IIFE to create the gameboard object and methods to interact with it
 const gameboardModule = (function() {
     const gameboard = [
@@ -8,6 +10,44 @@ const gameboardModule = (function() {
         ["", "", ""],
         ["", "", ""]
     ];
+    
+    const firstSquare = document.querySelector(".first");
+    const secondSquare = document.querySelector(".second");
+    const thirdSquare = document.querySelector(".third");
+    const fourthSquare = document.querySelector(".fourth");
+    const fifthSquare = document.querySelector(".fifth");
+    const sixthSquare = document.querySelector(".sixth");
+    const seventhSquare = document.querySelector(".seventh");
+    const eightSquare = document.querySelector(".eigth");
+    const ninthSquare = document.querySelector(".ninth");
+
+    firstSquare.addEventListener("click", () => {
+        firstSquare.classList.add("selected");
+    })
+    secondSquare.addEventListener("click", () => {
+        secondSquare.classList.add("selected");
+    })
+    thirdSquare.addEventListener("click", () => {
+        thirdSquare.classList.add("selected");
+    })
+    fourthSquare.addEventListener("click", () => {
+        fourthSquare.classList.add("selected");
+    })
+    fifthSquare.addEventListener("click", () => {
+        fifthSquare.classList.add("selected");
+    })
+    sixthSquare.addEventListener("click", () => {
+        sixthSquare.classList.add("selected");
+    })
+    seventhSquare.addEventListener("click", () => {
+        seventhSquare.classList.add("selected");
+    })
+    eightSquare.addEventListener("click", () => {
+        eightSquare.classList.add("selected");
+    })
+    ninthSquare.addEventListener("click", () => {
+        ninthSquare.classList.add("selected");
+    })
 
     function getGameboard() {
         return gameboard;

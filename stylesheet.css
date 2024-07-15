@@ -4,20 +4,114 @@
     padding: 0;
 }
 
+:root {
+    --grid-border: 7px solid black;
+    --black-transparent: rgba(0, 0, 0, 0.25);
+    --padding: 10px;
+}
+
 html {
     font-size: 12px;
+    font-family: sans-serif;
 }
 
 body {
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
     background-color: mediumvioletred;
     background-image: linear-gradient(300deg, darkmagenta, deeppink, orange, gold);
     background-repeat: no-repeat;
 }
 
 h1 {
-    text-align: center;
     font-size: 4rem;
-    font-family: sans-serif;
     color: yellow;
 }
+
+h2 {
+    font-size: 3rem;
+    margin-bottom: var(--padding);
+}
+
+h3 {
+    font-size: 2rem;
+}
+
+#game-grid {
+    width:350px;
+    height: 350px;
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.square {
+    font-size: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.square:hover {
+    background-color: rgba(153, 50, 204, 0.25);
+    cursor: pointer;
+}
+
+.first, .second, .fourth, .fifth, .seventh, .eigth {
+    border-right:  var(--grid-border);
+}
+
+.first, .second, .third, .fourth, .fifth, .sixth {
+    border-bottom: var(--grid-border);
+}
+
+.selected, .selected:hover {
+    background-color: rgba(153, 50, 204, 0.50);
+}
+
+#game-controller {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: var(--padding);
+    background-color: var(--black-transparent);
+}
+
+#start-button {
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: var(--padding);
+    color: yellow;
+    background-image: linear-gradient(300deg, darkmagenta, deeppink, orange, gold);
+    border: none;
+}
+
+#start-button:hover {
+    color: white;
+    box-shadow: 1px 1px 10px white, -1px -1px 10px white, 0 1px 10px white, 1px 0 10px white;
+}
+
+.stats {
+    width: 300px;
+    color: white;
+    text-align: center;
+}
+
+span {
+    color: yellow;
+    font-weight: normal;
+}
+
+footer {
+    width: 100%;
+    text-align: center;
+    color: white;
+    padding: var(--padding);
+    background-color: var(--black-transparent);
+}
+
