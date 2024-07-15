@@ -39,7 +39,9 @@ const gameboardModule = (function() {
         (gameboard[0][2] === symbol && gameboard[1][1] === symbol && gameboard[2][0] === symbol)) {
             console.log(`${symbol} wins!`);
             return true;
-        } 
+        } else {
+            console.log("keep playing the game");
+        }
 
         let tie = true;
         for (let row = 0; row < gameboard.length; row++) {
@@ -64,8 +66,6 @@ const gameboardModule = (function() {
         insertSymbols: insertSymbols,
     };
 })();
-console.log("Gameboard array:");
-console.log(gameboardModule.getGameboard());
 
 
 // Factory function to create player objects
@@ -79,14 +79,42 @@ const createPlayer = (name, symbol) => {
     };
     return player;
 };
-console.log(`Player 1: ${createPlayer("Elsie", "O").detail()}`);
-console.log(`Player 2: ${createPlayer("Robert", "X").detail()}`);
+
+let grid = gameboardModule.getGameboard(); // remove later
 
 // IIFE to create the game flow controller object and methods to track players' turn, validate moves, check for win/tie conditions, handle game reset
 const gameControllerModule = (function(){
-    // track players' turn
-    // switch turns between player
-    // validate move
-    // check win/tie conditions
-    // game reset
+    // track players' turn and switch turns between player
+    const playerOne = createPlayer("Elsie", "O");
+    const playerTwo = createPlayer("Robert", "X");
+
+    console.log(`Player 1: ${playerOne.detail()}`);
+    console.log(`Player 2: ${playerTwo.detail()}`);
+
+    let currentPlayer = playerOne;
+    let toggle = false;
+
+    function getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    function switchPlayers(row, column) {
+        // toggle boolean to switch players
+        gameboardModule.insertSymbols(row, column, currentPlayer.symbol);
+        currentPlayer = toggle ? playerOne : playerTwo;
+        toggle = !toggle;
+        console.log(`${currentPlayer.name} is playing the next turn`);
+    }
+
+    return {
+        getCurrentPlayer: getCurrentPlayer,
+        switchPlayers: switchPlayers
+    };
 })();
+
+console.log(`${gameControllerModule.getCurrentPlayer().name} is playing first`);
+console.log(grid);
+
+// validate move
+// check win/tie conditions
+// game reset
