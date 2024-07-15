@@ -13,7 +13,7 @@ const gameboardModule = (function() {
         return gameboard;
     }
     
-    function insertSymbols(row, column, symbol) {
+    function insertSymbol(row, column, symbol) {
         
         if (row >= 0 && row < gameboard.length) {
             if (column >= 0 && column < gameboard[row].length) {
@@ -61,10 +61,20 @@ const gameboardModule = (function() {
 
         return false;
     }
+
+    function resetGameboard() {
+        // clears the gameboard
+        for (let row = 0; row < gameboard.length; row++) {
+            for (let column = 0; column < gameboard[row].length; column++) {
+                gameboard[row][column] = "";
+            }
+        }
+    }
     
     return {
         getGameboard: getGameboard,
-        insertSymbols: insertSymbols,
+        insertSymbol: insertSymbol,
+        resetGameboard: resetGameboard
     };
 })();
 
@@ -83,8 +93,8 @@ let grid = gameboardModule.getGameboard(); // remove later
 
 // IIFE to create the game flow controller object and methods to track players' turn, validate moves, check for win/tie conditions, handle game reset
 const gameControllerModule = (function(){
-    const playerOne = createPlayer("Elsie", "O");
-    const playerTwo = createPlayer("Robert", "X");
+    const playerOne = createPlayer("Elsie", "X");
+    const playerTwo = createPlayer("Robert", "O");
 
     console.log(`Player 1: ${playerOne.detail()}`);
     console.log(`Player 2: ${playerTwo.detail()}`);
@@ -105,10 +115,14 @@ const gameControllerModule = (function(){
 
         console.log(`${currentPlayer.name} is playing this turn`);
         if (gameboardModule.getGameboard()[row][column] === '') {
-            gameboardModule.insertSymbols(row, column, currentPlayer.symbol);
-            currentPlayer = toggle ? playerOne : playerTwo;
-            toggle = !toggle;
-            console.log(`${currentPlayer.name} is playing the next turn`);
+            gameboardModule.insertSymbol(row, column, currentPlayer.symbol);
+            if (gameOver) {
+                console.log("The game is over, no more valid moves. Reset the game to play a new game");
+            } else {
+                currentPlayer = toggle ? playerOne : playerTwo;
+                toggle = !toggle;
+                console.log(`${currentPlayer.name} is playing the next turn`);
+            }
         } else {
             console.log(`You cannot make that move, choose a new space, ${currentPlayer.name}`);
         }
@@ -118,10 +132,20 @@ const gameControllerModule = (function(){
         gameOver = value;
     }
 
+    function resetGame() {
+        // if gameOver is true, should clear the gameboard
+        gameboardModule.resetGameboard();
+        currentPlayer = playerOne;
+        toggle = false;
+        gameOver = false;
+        console.log(`You've reset the game and ${currentPlayer.name} is starting the new game.`);
+    }
+
     return {
         getCurrentPlayer: getCurrentPlayer,
         switchPlayers: switchPlayers,
-        setGameOver: setGameOver
+        setGameOver: setGameOver,
+        resetGame: resetGame
     };
 })();
 
