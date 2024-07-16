@@ -1,6 +1,10 @@
-// Use factory functions as much as possible
-// Use IIFE for single instance: gameboard, displayController
 
+function updateCopyrightYear() {
+    const copyrightYear = document.querySelector(".year");
+
+    copyrightYear.textContent = new Date().getFullYear();
+};
+updateCopyrightYear();
 
 
 
@@ -11,48 +15,19 @@ const gameboardModule = (function() {
         ["", "", ""],
         ["", "", ""]
     ];
-    
-    const firstSquare = document.querySelector(".first");
-    const secondSquare = document.querySelector(".second");
-    const thirdSquare = document.querySelector(".third");
-    const fourthSquare = document.querySelector(".fourth");
-    const fifthSquare = document.querySelector(".fifth");
-    const sixthSquare = document.querySelector(".sixth");
-    const seventhSquare = document.querySelector(".seventh");
-    const eightSquare = document.querySelector(".eigth");
-    const ninthSquare = document.querySelector(".ninth");
-
-    firstSquare.addEventListener("click", () => {
-        firstSquare.classList.add("selected");
-    })
-    secondSquare.addEventListener("click", () => {
-        secondSquare.classList.add("selected");
-    })
-    thirdSquare.addEventListener("click", () => {
-        thirdSquare.classList.add("selected");
-    })
-    fourthSquare.addEventListener("click", () => {
-        fourthSquare.classList.add("selected");
-    })
-    fifthSquare.addEventListener("click", () => {
-        fifthSquare.classList.add("selected");
-    })
-    sixthSquare.addEventListener("click", () => {
-        sixthSquare.classList.add("selected");
-    })
-    seventhSquare.addEventListener("click", () => {
-        seventhSquare.classList.add("selected");
-    })
-    eightSquare.addEventListener("click", () => {
-        eightSquare.classList.add("selected");
-    })
-    ninthSquare.addEventListener("click", () => {
-        ninthSquare.classList.add("selected");
-    })
 
     function getGameboard() {
         return gameboard;
     }
+
+    const allSquares = document.querySelectorAll(".square");
+
+        allSquares.forEach((square) => {
+            square.addEventListener("click", () => {
+                square.classList.add("selected");
+                console.log(square.id);
+            })
+        })
     
     function insertSymbol(row, column, symbol) {
         
@@ -104,7 +79,6 @@ const gameboardModule = (function() {
     }
 
     function resetGameboard() {
-        // clears the gameboard
         for (let row = 0; row < gameboard.length; row++) {
             for (let column = 0; column < gameboard[row].length; column++) {
                 gameboard[row][column] = "";
@@ -133,16 +107,18 @@ const createPlayer = (name, symbol) => {
 
 // IIFE to create the game flow controller object and methods to track players' turn, validate moves, check for win/tie conditions, handle game reset
 const gameControllerModule = (function(){
+    let currentPlayer;
     let playerOne;
     let playerTwo;
-    let currentPlayer = playerOne;
     let toggle = false;
     let gameOver = false;
 
     function startGame() {
+        const resultsBox =document.getElementById("results");
         const startButton = document.getElementById("start-button");
         const startPopup = document.getElementById("start-modal");
         const submitButton = document.getElementById("submit-button");
+
         const playerOneStats = document.getElementById("one-stats");
         const playerTwoStats = document.getElementById("two-stats");
         const displayPlayerOneName = document.getElementById("name-one");
@@ -172,6 +148,7 @@ const gameControllerModule = (function(){
                     console.log(`Player 2: ${playerTwo.detail()}`);
                     startPopup.classList.remove("flex");
                     startPopup.classList.add("invisible");
+                    resultsBox.style.width = "10px";
                     playerOneStats.classList.remove("invisible");
                     playerTwoStats.classList.remove("invisible");
                     displayPlayerOneName.textContent = `${playerOne.name}`;
@@ -179,7 +156,7 @@ const gameControllerModule = (function(){
                     displayPlayOneSymbol.textContent = `${playerOne.symbol}`;
                     displayPlayTwoSymbol.textContent = `${playerTwo.symbol}`;
                 } else {
-                    alert("Thy symbols can't be the same");
+                    alert("The symbols can't be the same");
                 }
             } else {
                 alert("You're missing something");
@@ -191,7 +168,7 @@ const gameControllerModule = (function(){
         return currentPlayer;
     }
 
-    function switchPlayers(row, column) {
+    function switchPlayers(row, column) {    
         if (gameOver) {
             console.log('Game over, no more moves');
             return;
@@ -238,13 +215,7 @@ gameControllerModule.startGame();
 document.getElementById("submit-button").addEventListener("click", () => {
     const playerOne = gameControllerModule.getCurrentPlayer();
     if (playerOne) {
-        console.log(`Player 1: ${playerOne.detail()}`);
+        console.log(`This should display Player 1: ${playerOne.detail()}`);
     }
 })
 
-function updateCopyrightYear() {
-    const copyrightYear = document.querySelector(".year");
-
-    copyrightYear.textContent = new Date().getFullYear();
-};
-updateCopyrightYear();

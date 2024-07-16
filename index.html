@@ -48,19 +48,20 @@
     </div>
     <h1>Tic Tac Toe Game</h1>
     <div id="game-grid">
-        <div class="first square"></div>
-        <div class="second square"></div>
-        <div class="third square"></div>
-        <div class="fourth square"></div>
-        <div class="fifth square"></div>
-        <div class="sixth square"></div>
-        <div class="seventh square"></div>
-        <div class="eigth square"></div>
-        <div class="ninth square"></div>
+        <div id="top-left" class="first square"></div>
+        <div id="top-center" class="second square"></div>
+        <div id="top-right" class="third square"></div>
+        <div id="middle-left" class="fourth square"></div>
+        <div id="middle-center" class="fifth square"></div>
+        <div id="middle-right" class="sixth square"></div>
+        <div id="bottom-left" class="seventh square"></div>
+        <div id="bottom-center" class="eigth square"></div>
+        <div id="bottom-right" class="ninth square"></div>
     </div>
     <div id="game-controller">
         <div id="one-stats" class="player-one stats invisible">
-            <h2>Player 1:<span id="name-one"></span></h2>
+            <h2>Player 1:</h2>
+            <p id="name-one"></p>
             <h3>Symbol:<span id="first-symbol"></span></h3>
         </div>
         <div id="results">
@@ -69,7 +70,8 @@
             <button type="button" id="reset-button" class="invisible">Reset Game</button>
         </div>
         <div id="two-stats" class="player-two stats invisible">
-            <h2>Player 2:<span id="name-two"></span></h2>
+            <h2>Player 2:</h2>
+            <p id="name-two"></p>
             <h3>Symbol:<span id="second-symbol"></span></h3>
         </div>
     </div>
