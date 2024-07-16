@@ -3,6 +3,7 @@
 
 
 
+
 // IIFE to create the gameboard object and methods to interact with it
 const gameboardModule = (function() {
     const gameboard = [
@@ -129,19 +130,62 @@ const createPlayer = (name, symbol) => {
     return player;
 };
 
-let grid = gameboardModule.getGameboard(); // remove later
 
 // IIFE to create the game flow controller object and methods to track players' turn, validate moves, check for win/tie conditions, handle game reset
 const gameControllerModule = (function(){
-    const playerOne = createPlayer("Elsie", "X");
-    const playerTwo = createPlayer("Robert", "O");
-
-    console.log(`Player 1: ${playerOne.detail()}`);
-    console.log(`Player 2: ${playerTwo.detail()}`);
-
+    let playerOne;
+    let playerTwo;
     let currentPlayer = playerOne;
     let toggle = false;
     let gameOver = false;
+
+    function startGame() {
+        const startButton = document.getElementById("start-button");
+        const startPopup = document.getElementById("start-modal");
+        const submitButton = document.getElementById("submit-button");
+        const playerOneStats = document.getElementById("one-stats");
+        const playerTwoStats = document.getElementById("two-stats");
+        const displayPlayerOneName = document.getElementById("name-one");
+        const displayPlayerTwoName = document.getElementById("name-two");
+        const displayPlayOneSymbol = document.getElementById("first-symbol");
+        const displayPlayTwoSymbol = document.getElementById("second-symbol");
+
+        startButton.addEventListener("click", () => {
+            startButton.classList.add("invisible");
+            startPopup.classList.remove("invisible");
+            startPopup.classList.add("flex");        
+        })
+    
+        submitButton.addEventListener("click", (event) => {
+            event.preventDefault();
+
+            const playerOneName = document.getElementById("player-one-name").value;
+            const playerTwoName = document.getElementById("player-two-name").value;
+            const playerOneSymbol = document.getElementById("player-one-symbol").value;
+            const playerTwoSymbol = document.getElementById("player-two-symbol").value;
+
+            if (playerOneName !== "" && playerTwoName !== "" && playerOneSymbol !== "" && playerTwoSymbol !== "") {
+                if (playerOneSymbol !== playerTwoSymbol) {
+                    playerOne = createPlayer(playerOneName, playerOneSymbol);
+                    playerTwo = createPlayer(playerTwoName, playerTwoSymbol);
+                    console.log(`Player 1: ${playerOne.detail()}`);
+                    console.log(`Player 2: ${playerTwo.detail()}`);
+                    startPopup.classList.remove("flex");
+                    startPopup.classList.add("invisible");
+                    playerOneStats.classList.remove("invisible");
+                    playerTwoStats.classList.remove("invisible");
+                    displayPlayerOneName.textContent = `${playerOne.name}`;
+                    displayPlayerTwoName.textContent = `${playerTwo.name}`;
+                    displayPlayOneSymbol.textContent = `${playerOne.symbol}`;
+                    displayPlayTwoSymbol.textContent = `${playerTwo.symbol}`;
+                } else {
+                    alert("Thy symbols can't be the same");
+                }
+            } else {
+                alert("You're missing something");
+            }
+        });
+    }
 
     function getCurrentPlayer() {
         return currentPlayer;
@@ -173,7 +217,6 @@ const gameControllerModule = (function(){
     }
 
     function resetGame() {
-        // if gameOver is true, should clear the gameboard
         gameboardModule.resetGameboard();
         currentPlayer = playerOne;
         toggle = false;
@@ -182,6 +225,7 @@ const gameControllerModule = (function(){
     }
 
     return {
+        startGame: startGame,
         getCurrentPlayer: getCurrentPlayer,
         switchPlayers: switchPlayers,
         setGameOver: setGameOver,
@@ -189,5 +233,18 @@ const gameControllerModule = (function(){
     };
 })();
 
-console.log(`${gameControllerModule.getCurrentPlayer().name} is playing first`);
-console.log(grid);
+gameControllerModule.startGame();
+
+document.getElementById("submit-button").addEventListener("click", () => {
+    const playerOne = gameControllerModule.getCurrentPlayer();
+    if (playerOne) {
+        console.log(`Player 1: ${playerOne.detail()}`);
+    }
+})
+
+function updateCopyrightYear() {
+    const copyrightYear = document.querySelector(".year");
+
+    copyrightYear.textContent = new Date().getFullYear();
+};
+updateCopyrightYear();

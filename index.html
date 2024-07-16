@@ -8,6 +8,44 @@
     <script src="tic-tac-toe.js" defer></script>
 </head>
 <body>
+    <div id="start-modal" class="invisible">
+        <div id="start-content">
+            <form id="start-form">
+                <fieldset>
+                    <legend>Player Form</legend>
+                    <div class="block">
+                        <div>
+                            <label for="player-one-name">Player 1:</label>
+                            <input type="text" id="player-one-name" placeholder="Name" required>
+                        </div>
+                        <div>
+                            <label for="player-one-symbol">Symbol:</label>
+                            <select name="Select symbol" id="player-one-symbol">
+                                <option value="">Select symbol</option>
+                                <option value="O">O</option>
+                                <option value="X">X</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="block">
+                        <div>
+                            <label for="player-two-name">Player 2:</label>
+                            <input type="text" id="player-two-name" placeholder="Name" required>
+                        </div>
+                        <div>
+                            <label for="player-two-symbol">Symbol:</label>
+                            <select name="Select symbol" id="player-two-symbol">
+                                <option value="">Select symbol</option>
+                                <option value="O">O</option>
+                                <option value="X">X</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" id="submit-button">Submit</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
     <h1>Tic Tac Toe Game</h1>
     <div id="game-grid">
         <div class="first square"></div>
@@ -21,18 +59,20 @@
         <div class="ninth square"></div>
     </div>
     <div id="game-controller">
-        <div class="player-one stats">
-            <h2>Player 1:<span id="name-one">Elise</span></h2>
-            <h3>Symbol:<span id="first-symbol">O</span></h3>
+        <div id="one-stats" class="player-one stats invisible">
+            <h2>Player 1:<span id="name-one"></span></h2>
+            <h3>Symbol:<span id="first-symbol"></span></h3>
         </div>
-        <div class="results">
-            <button type="button" id="start-button">Ready to Play?</button>
+        <div id="results">
+            <button type="button" id="start-button" class="">Ready to Play?</button>
+            <p id="outcome" class="invisible">It's a tie</p>
+            <button type="button" id="reset-button" class="invisible">Reset Game</button>
         </div>
-        <div class="player-two stats">
-            <h2>Player 2:<span id="name-two">Robert</span></h2>
-            <h3>Symbol:<span id="second-symbol">X</span></h3>
+        <div id="two-stats" class="player-two stats invisible">
+            <h2>Player 2:<span id="name-two"></span></h2>
+            <h3>Symbol:<span id="second-symbol"></span></h3>
         </div>
     </div>
-    <footer>Created by ArtanaFio on Github</footer>
+    <footer>Created by "ArtanaFio" on <a href="https://github.com/ArtanaFio/" target="_blank">Github</a> &#169 <span class="year"></span></footer>
 </body>
 </html>

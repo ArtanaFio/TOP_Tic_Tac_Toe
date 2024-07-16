@@ -8,6 +8,7 @@
     --grid-border: 7px solid black;
     --black-transparent: rgba(0, 0, 0, 0.25);
     --padding: 10px;
+    --selected-stats: orchid;
 }
 
 html {
@@ -26,6 +27,14 @@ body {
     background-repeat: no-repeat;
 }
 
+.invisible {
+    display: none;
+}
+
+.flex {
+    display: flex;
+}
+
 h1 {
     font-size: 4rem;
     color: yellow;
@@ -38,6 +47,57 @@ h2 {
 
 h3 {
     font-size: 2rem;
+}
+
+#start-modal {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0);
+    justify-content: center;
+    align-items: center;
+}
+
+#start-content {
+    height: 60%;
+    background-color: black;
+    border-radius: 10px;
+    padding: var(--padding);
+}
+
+form, input, select {
+    font-size: 2rem;
+}
+
+fieldset {
+    border: none;
+    display: flex;
+    flex-direction: column;
+    color: white;
+}
+
+legend {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.block, #submit-button {
+    margin-top: 50px;
+}
+
+label {
+    display: inline-block;
+    width: 100px;
+}
+
+input, select {
+    width: 300px;
+}
+
+#submit-button {
+    background-color: orchid;
+    color: white;
+    align-self: center;
 }
 
 #game-grid {
@@ -74,35 +134,65 @@ h3 {
 
 #game-controller {
     width: 100%;
+    height: 150px;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    flex-wrap: wrap;
     padding: var(--padding);
     background-color: var(--black-transparent);
 }
 
-#start-button {
+#results {
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#outcome {
+    font-size: 3rem;
+    font-weight: bold;
+    color: yellow;
+    text-shadow: 2px 2px 10px yellow;
+}
+
+button {
     font-size: 2rem;
     font-weight: bold;
     border-radius: 10px;
     padding: var(--padding);
-    color: yellow;
-    background-image: linear-gradient(300deg, darkmagenta, deeppink, orange, gold);
     border: none;
 }
 
-#start-button:hover {
+button:hover {
     color: white;
     box-shadow: 1px 1px 10px white, -1px -1px 10px white, 0 1px 10px white, 1px 0 10px white;
+}
+
+#start-button {
+    color: yellow;
+    background-image: linear-gradient(300deg, darkmagenta, deeppink, orange, gold);
+}
+
+#reset-button {
+    color: white;
+    background-color: orchid;
 }
 
 .stats {
     width: 300px;
     color: white;
     text-align: center;
+    border-radius: 10px;
 }
 
-span {
+.in-play {
+    background-color: var(--selected-stats);
+    box-shadow: 1px 1px 20px var(--selected-stats), -1px -1px 20px var(--selected-stats);
+}
+
+.stats span {
     color: yellow;
     font-weight: normal;
 }
@@ -113,5 +203,9 @@ footer {
     color: white;
     padding: var(--padding);
     background-color: var(--black-transparent);
+}
+
+a {
+    color: pink;
 }
 
