@@ -15,22 +15,56 @@ const gameboardModule = (function() {
         ["", "", ""],
         ["", "", ""]
     ];
+    const idToPositionMap = {
+        "first": [0, 0],
+        "second": [0, 1],
+        "third": [0, 2],
+        "fourth": [1, 0],
+        "fifth": [1, 1],
+        "sixth": [1, 2],
+        "seventh": [2, 0],
+        "eighth": [2, 1],
+        "ninth": [2, 2]
+    };
+
+    const allSquares = document.querySelectorAll(".square");
+    const allNotRightSquares = document.querySelectorAll(".not-right");
+    const allNotBottomSquares = document.querySelectorAll(".not-bottom");
 
     function getGameboard() {
         return gameboard;
     }
 
-    const allSquares = document.querySelectorAll(".square");
+    function getSquares() {
+        return allSquares;
+    }
 
-        allSquares.forEach((square) => {
-            square.addEventListener("click", () => {
+    function getNotRightSquares() {
+        return allNotRightSquares;
+    }
+
+    function getNotBottomSquares() {
+        return allNotBottomSquares;
+    }
+
+    allSquares.forEach((square) => {
+        square.addEventListener("click", () => {
+            if (gameControllerModule.getCurrentPlayer() && square.textContent === "") {
                 square.classList.add("selected");
-                console.log(square.id);
-            })
-        })
+                console.log("----------");
+                console.log(`${square.id} square`);
+                const [row, column] = idToPositionMap[square.id];
+                gameControllerModule.switchPlayers(row, column);
+                square.textContent = gameControllerModule.getCurrentPlayer().symbol;
+            } else if (!gameControllerModule.getCurrentPlayer()) {
+                alert("Enter players to begin playing");
+            } else if (square.textContent !== "") {
+                alert("Invalid move; choose an empty square");
+            }
+        });
+    });
     
-    function insertSymbol(row, column, symbol) {
-        
+    function insertSymbol(row, column, symbol) {    
         if (row >= 0 && row < gameboard.length) {
             if (column >= 0 && column < gameboard[row].length) {
                 if (gameboard[row][column] === "") {
@@ -87,6 +121,9 @@ const gameboardModule = (function() {
     }
     
     return {
+        getSquares: getSquares,
+        getNotBottomSquares,
+        getNotRightSquares,
         getGameboard: getGameboard,
         insertSymbol: insertSymbol,
         resetGameboard: resetGameboard
@@ -108,6 +145,7 @@ const createPlayer = (name, symbol) => {
 // IIFE to create the game flow controller object and methods to track players' turn, validate moves, check for win/tie conditions, handle game reset
 const gameControllerModule = (function(){
     let currentPlayer;
+    let nextPlayer;
     let playerOne;
     let playerTwo;
     let toggle = false;
@@ -132,36 +170,54 @@ const gameControllerModule = (function(){
             startPopup.classList.add("flex");        
         })
     
-        submitButton.addEventListener("click", (event) => {
-            event.preventDefault();
+        return new Promise((resolve, reject) => {
+            submitButton.addEventListener("click", (event) => {
+                event.preventDefault();
 
-            const playerOneName = document.getElementById("player-one-name").value;
-            const playerTwoName = document.getElementById("player-two-name").value;
-            const playerOneSymbol = document.getElementById("player-one-symbol").value;
-            const playerTwoSymbol = document.getElementById("player-two-symbol").value;
+                const playerOneName = document.getElementById("player-one-name").value;
+                const playerTwoName = document.getElementById("player-two-name").value;
+                const playerOneSymbol = document.getElementById("player-one-symbol").value;
+                const playerTwoSymbol = document.getElementById("player-two-symbol").value;
 
-            if (playerOneName !== "" && playerTwoName !== "" && playerOneSymbol !== "" && playerTwoSymbol !== "") {
-                if (playerOneSymbol !== playerTwoSymbol) {
-                    playerOne = createPlayer(playerOneName, playerOneSymbol);
-                    playerTwo = createPlayer(playerTwoName, playerTwoSymbol);
-                    console.log(`Player 1: ${playerOne.detail()}`);
-                    console.log(`Player 2: ${playerTwo.detail()}`);
-                    startPopup.classList.remove("flex");
-                    startPopup.classList.add("invisible");
-                    resultsBox.style.width = "10px";
-                    playerOneStats.classList.remove("invisible");
-                    playerTwoStats.classList.remove("invisible");
-                    displayPlayerOneName.textContent = `${playerOne.name}`;
-                    displayPlayerTwoName.textContent = `${playerTwo.name}`;
-                    displayPlayOneSymbol.textContent = `${playerOne.symbol}`;
-                    displayPlayTwoSymbol.textContent = `${playerTwo.symbol}`;
+                if (playerOneName !== "" && playerTwoName !== "" && playerOneSymbol !== "" && playerTwoSymbol !== "") {
+                    if (playerOneSymbol !== playerTwoSymbol) {
+                        gameboardModule.getNotBottomSquares().forEach((square) => {
+                            square.classList.add("active-not-bottom");
+                        });
+                        gameboardModule.getNotRightSquares().forEach((square) => {
+                            square.classList.add("active-not-right");
+                        });
+                        gameboardModule.getSquares().forEach((square) => {
+                            square.addEventListener("mouseenter", () => {
+                                square.classList.add("active-hover");
+                            });
+                            square.addEventListener("mouseleave", () => {
+                                square.classList.remove("active-hover");
+                            })
+                        });
+                        playerOne = createPlayer(playerOneName, playerOneSymbol);
+                        playerTwo = createPlayer(playerTwoName, playerTwoSymbol);
+                        console.log(`Player 1: ${playerOne.detail()}`);
+                        console.log(`Player 2: ${playerTwo.detail()}`);
+                        currentPlayer = playerOne;
+                        startPopup.classList.remove("flex");
+                        startPopup.classList.add("invisible");
+                        resultsBox.style.width = "10px";
+                        playerOneStats.classList.remove("invisible");
+                        playerTwoStats.classList.remove("invisible");
+                        displayPlayerOneName.textContent = `${playerOne.name}`;
+                        displayPlayerTwoName.textContent = `${playerTwo.name}`;
+                        displayPlayOneSymbol.textContent = `${playerOne.symbol}`;
+                        displayPlayTwoSymbol.textContent = `${playerTwo.symbol}`;
+                        resolve({ playerOne, playerTwo });
+                    } else {
+                        alert("The symbols can't be the same");
+                    }
                 } else {
-                    alert("The symbols can't be the same");
+                    alert("You're missing something");
                 }
-            } else {
-                alert("You're missing something");
-            }
-        });
+            });
+        });           
     }
 
     function getCurrentPlayer() {
@@ -173,16 +229,16 @@ const gameControllerModule = (function(){
             console.log('Game over, no more moves');
             return;
         }
-
         console.log(`${currentPlayer.name} is playing this turn`);
         if (gameboardModule.getGameboard()[row][column] === '') {
             gameboardModule.insertSymbol(row, column, currentPlayer.symbol);
             if (gameOver) {
                 console.log("The game is over, no more valid moves. Reset the game to play a new game");
             } else {
-                currentPlayer = toggle ? playerOne : playerTwo;
+                currentPlayer = toggle ? playerTwo : playerOne;
+                nextPlayer = toggle ? playerOne : playerTwo;
                 toggle = !toggle;
-                console.log(`${currentPlayer.name} is playing the next turn`);
+                console.log(`${nextPlayer.name} is playing the next turn`);
             }
         } else {
             console.log(`You cannot make that move, choose a new space, ${currentPlayer.name}`);
@@ -210,12 +266,11 @@ const gameControllerModule = (function(){
     };
 })();
 
-gameControllerModule.startGame();
-
-document.getElementById("submit-button").addEventListener("click", () => {
-    const playerOne = gameControllerModule.getCurrentPlayer();
-    if (playerOne) {
-        console.log(`This should display Player 1: ${playerOne.detail()}`);
-    }
-})
+gameControllerModule.startGame().then(players => {
+    const { playerOne, playerTwo } = players;
+    console.log(`Initialized Player 1: ${playerOne.detail()}`);
+    console.log(`Initialized Player 2: ${playerTwo.detail()}`);
+}).catch(error => {
+    console.error("Error initializing players:", error);
+});
 

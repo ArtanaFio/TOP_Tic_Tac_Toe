@@ -12,7 +12,7 @@
         <div id="start-content">
             <form id="start-form">
                 <fieldset>
-                    <legend>Player Form</legend>
+                    <legend>Enter Players' Names and Choose Symbols</legend>
                     <div class="block">
                         <div>
                             <label for="player-one-name">Player 1:</label>
@@ -22,8 +22,8 @@
                             <label for="player-one-symbol">Symbol:</label>
                             <select name="Select symbol" id="player-one-symbol">
                                 <option value="">Select symbol</option>
-                                <option value="O">O</option>
                                 <option value="X">X</option>
+                                <option value="O">O</option>
                             </select>
                         </div>
                     </div>
@@ -36,8 +36,8 @@
                             <label for="player-two-symbol">Symbol:</label>
                             <select name="Select symbol" id="player-two-symbol">
                                 <option value="">Select symbol</option>
-                                <option value="O">O</option>
                                 <option value="X">X</option>
+                                <option value="O">O</option>
                             </select>
                         </div>
                     </div>
@@ -48,21 +48,21 @@
     </div>
     <h1>Tic Tac Toe Game</h1>
     <div id="game-grid">
-        <div id="top-left" class="first square"></div>
-        <div id="top-center" class="second square"></div>
-        <div id="top-right" class="third square"></div>
-        <div id="middle-left" class="fourth square"></div>
-        <div id="middle-center" class="fifth square"></div>
-        <div id="middle-right" class="sixth square"></div>
-        <div id="bottom-left" class="seventh square"></div>
-        <div id="bottom-center" class="eigth square"></div>
-        <div id="bottom-right" class="ninth square"></div>
+        <div id="first" class="not-bottom not-right square"></div>
+        <div id="second" class="not-bottom not-right square"></div>
+        <div id="third" class="not-bottom square"></div>
+        <div id="fourth" class="not-bottom not-right square"></div>
+        <div id="fifth" class="not-bottom not-right square"></div>
+        <div id="sixth" class="not-bottom square"></div>
+        <div id="seventh" class="not-right square"></div>
+        <div id="eighth" class="not-right square"></div>
+        <div id="ninth" class="square"></div>
     </div>
     <div id="game-controller">
         <div id="one-stats" class="player-one stats invisible">
             <h2>Player 1:</h2>
             <p id="name-one"></p>
-            <h3>Symbol:<span id="first-symbol"></span></h3>
+            <h3>Symbol: <span id="first-symbol"></span></h3>
         </div>
         <div id="results">
             <button type="button" id="start-button" class="">Ready to Play?</button>
@@ -72,7 +72,7 @@
         <div id="two-stats" class="player-two stats invisible">
             <h2>Player 2:</h2>
             <p id="name-two"></p>
-            <h3>Symbol:<span id="second-symbol"></span></h3>
+            <h3>Symbol: <span id="second-symbol"></span></h3>
         </div>
     </div>
     <footer>Created by "ArtanaFio" on <a href="https://github.com/ArtanaFio/" target="_blank">Github</a> &#169 <span class="year"></span></footer>

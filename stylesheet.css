@@ -5,6 +5,7 @@
 }
 
 :root {
+    --disabled-grid: 7px solid rgba(0, 0, 0, 0.25);
     --grid-border: 7px solid black;
     --black-transparent: rgba(0, 0, 0, 0.25);
     --padding: 10px;
@@ -76,8 +77,9 @@ fieldset {
 }
 
 legend {
-    font-size: 3rem;
-    font-weight: bold;
+    font-size: 2rem;
+    text-align: center;
+    color: orchid;
 }
 
 .block, #submit-button {
@@ -114,16 +116,24 @@ input, select {
     align-items: center;
 }
 
-.square:hover {
+.active-hover {
     background-color: rgba(153, 50, 204, 0.25);
     cursor: pointer;
 }
 
-.first, .second, .fourth, .fifth, .seventh, .eigth {
-    border-right:  var(--grid-border);
+.not-right {
+    border-right:  var(--disabled-grid);
 }
 
-.first, .second, .third, .fourth, .fifth, .sixth {
+.not-bottom {
+    border-bottom: var(--disabled-grid);
+}
+
+.active-not-right {
+    border-right: var(--grid-border);
+}
+
+.active-not-bottom {
     border-bottom: var(--grid-border);
 }
 
