@@ -98,7 +98,11 @@ const gameboardModule = (function() {
             allSquares.forEach((square) => {
                 square.classList.add("selected");
             })
+            gameControllerModule.getResultsBox().style.width = "250px";
+            gameControllerModule.getOutcome().classList.remove("invisible");
+            gameControllerModule.getOutcome().textContent = `${gameControllerModule.getCurrentPlayer().name} wins!`;
             console.log(`${gameControllerModule.getCurrentPlayer().name} wins!`);
+            gameControllerModule.getResetButton().classList.remove("invisible");
             return true;
         } else {
             console.log("keep playing the game");
@@ -115,7 +119,11 @@ const gameboardModule = (function() {
             if (!tie) break;
         }
         if (tie) {
-            alert("It's a tie");
+            gameControllerModule.getResultsBox().style.width = "250px";
+            gameControllerModule.getOutcome().classList.remove("invisible");
+            gameControllerModule.getOutcome().textContent = "It's a tie";
+            gameControllerModule.getResetButton().classList.remove("invisible");
+            console.log("It's a tie");
             return true;
         }
 
@@ -126,6 +134,10 @@ const gameboardModule = (function() {
         for (let row = 0; row < gameboard.length; row++) {
             for (let column = 0; column < gameboard[row].length; column++) {
                 gameboard[row][column] = "";
+                allSquares.forEach((square) => {
+                    square.textContent = "";
+                    square.classList.remove("selected");
+                });
             }
         }
     }
@@ -162,18 +174,43 @@ const gameControllerModule = (function(){
     let toggle = false;
     let gameOver = false;
 
-    function startGame() {
-        const resultsBox =document.getElementById("results");
-        const startButton = document.getElementById("start-button");
-        const startPopup = document.getElementById("start-modal");
-        const submitButton = document.getElementById("submit-button");
 
-        const playerOneStats = document.getElementById("one-stats");
-        const playerTwoStats = document.getElementById("two-stats");
-        const displayPlayerOneName = document.getElementById("name-one");
-        const displayPlayerTwoName = document.getElementById("name-two");
-        const displayPlayOneSymbol = document.getElementById("first-symbol");
-        const displayPlayTwoSymbol = document.getElementById("second-symbol");
+    const resultsBox =document.getElementById("results");
+    const startButton = document.getElementById("start-button");
+    const outcome = document.getElementById("outcome");
+    const resetButton = document.getElementById("reset-button");
+
+    const startPopup = document.getElementById("start-modal");
+    const submitButton = document.getElementById("submit-button");
+
+    const playerOneStats = document.getElementById("one-stats");
+    const playerTwoStats = document.getElementById("two-stats");
+    const displayPlayerOneName = document.getElementById("name-one");
+    const displayPlayerTwoName = document.getElementById("name-two");
+    const displayPlayOneSymbol = document.getElementById("first-symbol");
+    const displayPlayTwoSymbol = document.getElementById("second-symbol");
+
+    function getResultsBox() {
+        return resultsBox;
+    }
+    
+    function getOutcome() {
+        return outcome;
+    }
+
+    function getResetButton() {
+        return resetButton;
+    }
+
+    function getPlayerOneStats() {
+        return playerOneStats;
+    }
+
+    function getPlayerTwoStats() {
+        return playerTwoStats;
+    }
+
+    function startGame() {
 
         startButton.addEventListener("click", () => {
             startButton.classList.add("invisible");
@@ -185,10 +222,10 @@ const gameControllerModule = (function(){
             submitButton.addEventListener("click", (event) => {
                 event.preventDefault();
 
-                const playerOneName = "X";//document.getElementById("player-one-name").value;
-                const playerTwoName = "O";//document.getElementById("player-two-name").value;
-                const playerOneSymbol = "X";//document.getElementById("player-one-symbol").value;
-                const playerTwoSymbol = "O";//document.getElementById("player-two-symbol").value;
+                const playerOneName = document.getElementById("player-one-name").value;
+                const playerTwoName = document.getElementById("player-two-name").value;
+                const playerOneSymbol = document.getElementById("player-one-symbol").value;
+                const playerTwoSymbol = document.getElementById("player-two-symbol").value;
 
                 if (playerOneName !== "" && playerTwoName !== "" && playerOneSymbol !== "" && playerTwoSymbol !== "") {
                     if (playerOneSymbol !== playerTwoSymbol) {
@@ -220,6 +257,7 @@ const gameControllerModule = (function(){
                         displayPlayOneSymbol.textContent = `${playerOne.symbol}`;
                         displayPlayTwoSymbol.textContent = `${playerTwo.symbol}`;
                         currentPlayer = playerOne;
+                        playerOneStats.classList.add("in-play");
                         resolve({ playerOne, playerTwo });
                     } else {
                         alert("Players cannot use the same symbol");
@@ -252,13 +290,23 @@ const gameControllerModule = (function(){
             square.textContent = currentPlayer.symbol;
 
             if (gameOver) {
-                // game over
+                playerOneStats.classList.add("invisible");
+                playerTwoStats.classList.add("invisible");
+                playerOneStats.classList.remove("in-play");
+                playerTwoStats.classList.remove("in-play");
             } else {
                 toggle = !toggle;
                 currentPlayer = toggle ? playerTwo : playerOne;
                 nextPlayer = toggle ? playerOne : playerTwo;
                 console.log(`${currentPlayer.name} is playing this turn`);
                 console.log(`${nextPlayer.name} is playing the next turn`);
+                if (currentPlayer === playerOne) {
+                    playerOneStats.classList.add("in-play");
+                    playerTwoStats.classList.remove("in-play");
+                } else if (currentPlayer === playerTwo) {
+                    playerTwoStats.classList.add("in-play");
+                    playerOneStats.classList.remove("in-play");
+                }
             }
         } else {
             console.log(`You cannot make that move, choose a new space, ${currentPlayer.name}`);
@@ -281,7 +329,20 @@ const gameControllerModule = (function(){
         console.log(`You've reset the game and ${currentPlayer.name} is starting the new game.`);
     }
 
+    resetButton.addEventListener("click", () => {
+        resetGame();
+        outcome.textContent = "";
+        outcome.classList.add("invisible");
+        resetButton.classList.add("invisible");
+        startButton.classList.remove("invisible");
+    });
+
     return {
+        getResultsBox: getResultsBox,
+        getOutcome: getOutcome,
+        getResetButton: getResetButton,
+        getPlayerOneStats: getPlayerOneStats,
+        getPlayerTwoStats: getPlayerTwoStats,
         startGame: startGame,
         getCurrentPlayer: getCurrentPlayer,
         switchPlayers: switchPlayers,
