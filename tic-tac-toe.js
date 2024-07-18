@@ -47,15 +47,22 @@ const gameboardModule = (function() {
         return allNotBottomSquares;
     }
 
+    function getIdToPositionMap() {
+        return idToPositionMap;
+    }
+
     allSquares.forEach((square) => {
         square.addEventListener("click", () => {
+            if (gameControllerModule.gameFinished()) {
+                alert("Reset game to play again");
+                return;
+            }
             if (gameControllerModule.getCurrentPlayer() && square.textContent === "") {
+                const [row, column] = idToPositionMap[square.id];
                 square.classList.add("selected");
                 console.log("----------");
                 console.log(`${square.id} square`);
-                const [row, column] = idToPositionMap[square.id];
                 gameControllerModule.switchPlayers(row, column);
-                square.textContent = gameControllerModule.getCurrentPlayer().symbol;
             } else if (!gameControllerModule.getCurrentPlayer()) {
                 alert("Enter players to begin playing");
             } else if (square.textContent !== "") {
@@ -88,6 +95,9 @@ const gameboardModule = (function() {
         (gameboard[0][2] === symbol && gameboard[1][2] === symbol && gameboard[2][2] === symbol) || 
         (gameboard[0][0] === symbol && gameboard[1][1] === symbol && gameboard[2][2] === symbol) || 
         (gameboard[0][2] === symbol && gameboard[1][1] === symbol && gameboard[2][0] === symbol)) {
+            allSquares.forEach((square) => {
+                square.classList.add("selected");
+            })
             console.log(`${gameControllerModule.getCurrentPlayer().name} wins!`);
             return true;
         } else {
@@ -105,7 +115,7 @@ const gameboardModule = (function() {
             if (!tie) break;
         }
         if (tie) {
-            console.log("It's a tie");
+            alert("It's a tie");
             return true;
         }
 
@@ -126,7 +136,8 @@ const gameboardModule = (function() {
         getNotRightSquares,
         getGameboard: getGameboard,
         insertSymbol: insertSymbol,
-        resetGameboard: resetGameboard
+        resetGameboard: resetGameboard,
+        getIdToPositionMap: getIdToPositionMap
     };
 })();
 
@@ -174,10 +185,10 @@ const gameControllerModule = (function(){
             submitButton.addEventListener("click", (event) => {
                 event.preventDefault();
 
-                const playerOneName = document.getElementById("player-one-name").value;
-                const playerTwoName = document.getElementById("player-two-name").value;
-                const playerOneSymbol = document.getElementById("player-one-symbol").value;
-                const playerTwoSymbol = document.getElementById("player-two-symbol").value;
+                const playerOneName = "X";//document.getElementById("player-one-name").value;
+                const playerTwoName = "O";//document.getElementById("player-two-name").value;
+                const playerOneSymbol = "X";//document.getElementById("player-one-symbol").value;
+                const playerTwoSymbol = "O";//document.getElementById("player-two-symbol").value;
 
                 if (playerOneName !== "" && playerTwoName !== "" && playerOneSymbol !== "" && playerTwoSymbol !== "") {
                     if (playerOneSymbol !== playerTwoSymbol) {
@@ -199,7 +210,6 @@ const gameControllerModule = (function(){
                         playerTwo = createPlayer(playerTwoName, playerTwoSymbol);
                         console.log(`Player 1: ${playerOne.detail()}`);
                         console.log(`Player 2: ${playerTwo.detail()}`);
-                        currentPlayer = playerOne;
                         startPopup.classList.remove("flex");
                         startPopup.classList.add("invisible");
                         resultsBox.style.width = "10px";
@@ -209,12 +219,13 @@ const gameControllerModule = (function(){
                         displayPlayerTwoName.textContent = `${playerTwo.name}`;
                         displayPlayOneSymbol.textContent = `${playerOne.symbol}`;
                         displayPlayTwoSymbol.textContent = `${playerTwo.symbol}`;
+                        currentPlayer = playerOne;
                         resolve({ playerOne, playerTwo });
                     } else {
-                        alert("The symbols can't be the same");
+                        alert("Players cannot use the same symbol");
                     }
                 } else {
-                    alert("You're missing something");
+                    alert("You're missing something(s)");
                 }
             });
         });           
@@ -224,20 +235,29 @@ const gameControllerModule = (function(){
         return currentPlayer;
     }
 
-    function switchPlayers(row, column) {    
+    function switchPlayers(row, column) {  
+        const idToPositionMap = gameboardModule.getIdToPositionMap();
+        
         if (gameOver) {
-            console.log('Game over, no more moves');
             return;
         }
-        console.log(`${currentPlayer.name} is playing this turn`);
         if (gameboardModule.getGameboard()[row][column] === '') {
+
             gameboardModule.insertSymbol(row, column, currentPlayer.symbol);
+
+            const squareId = Object.keys(idToPositionMap).find(key =>
+                idToPositionMap[key][0] === row && idToPositionMap[key][1] === column
+            );
+            const square = document.getElementById(squareId);
+            square.textContent = currentPlayer.symbol;
+
             if (gameOver) {
-                console.log("The game is over, no more valid moves. Reset the game to play a new game");
+                // game over
             } else {
+                toggle = !toggle;
                 currentPlayer = toggle ? playerTwo : playerOne;
                 nextPlayer = toggle ? playerOne : playerTwo;
-                toggle = !toggle;
+                console.log(`${currentPlayer.name} is playing this turn`);
                 console.log(`${nextPlayer.name} is playing the next turn`);
             }
         } else {
@@ -247,6 +267,10 @@ const gameControllerModule = (function(){
 
     function setGameOver(value) {
         gameOver = value;
+    }
+
+    function gameFinished() {
+        return gameOver;
     }
 
     function resetGame() {
@@ -262,6 +286,7 @@ const gameControllerModule = (function(){
         getCurrentPlayer: getCurrentPlayer,
         switchPlayers: switchPlayers,
         setGameOver: setGameOver,
+        gameFinished: gameFinished,
         resetGame: resetGame
     };
 })();
