@@ -82,7 +82,7 @@ legend {
     color: orchid;
 }
 
-.block, #submit-button {
+.block, .form-buttons {
     margin-top: 50px;
 }
 
@@ -95,7 +95,13 @@ input, select {
     width: 300px;
 }
 
-#submit-button {
+.form-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
+#submit-button, #cancel {
     font-size: 2rem;
     background-color: orchid;
     color: white;

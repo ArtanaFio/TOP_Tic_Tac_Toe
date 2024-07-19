@@ -197,6 +197,7 @@ const gameControllerModule = (function(){
 
     const startPopup = document.getElementById("start-modal");
     const submitButton = document.getElementById("submit-button");
+    const cancelButton = document.getElementById("cancel");
 
     const playerOneStats = document.getElementById("one-stats");
     const playerTwoStats = document.getElementById("two-stats");
@@ -236,10 +237,22 @@ const gameControllerModule = (function(){
         document.getElementById("player-two-name").value = "";
         document.getElementById("player-one-symbol").selectedIndex = 0;
         document.getElementById("player-two-symbol").selectedIndex = 0;
-        playerOneStats.classList.add("invisible");
-        playerTwoStats.classList.add("invisible");
+        //playerOneStats.classList.add("invisible");
+        //playerTwoStats.classList.add("invisible");
         startPopup.classList.remove("invisible");
         startPopup.classList.add("flex");     
+    })
+
+    cancelButton.addEventListener("click", () => {
+        document.getElementById("player-one-name").value = "";
+        document.getElementById("player-two-name").value = "";
+        document.getElementById("player-one-symbol").selectedIndex = 0;
+        document.getElementById("player-two-symbol").selectedIndex = 0;
+        startPopup.classList.add("invisible");
+        startPopup.classList.remove("flex");
+        if (!currentPlayer) {
+            startButton.classList.remove("invisible");
+        }
     })
 
     function startGame() {
