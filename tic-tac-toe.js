@@ -98,11 +98,9 @@ const gameboardModule = (function() {
             allSquares.forEach((square) => {
                 square.classList.add("selected");
             })
-            gameControllerModule.getResultsBox().style.width = "250px";
             gameControllerModule.getOutcome().classList.remove("invisible");
             gameControllerModule.getOutcome().textContent = `${gameControllerModule.getCurrentPlayer().name} wins!`;
             console.log(`${gameControllerModule.getCurrentPlayer().name} wins!`);
-            gameControllerModule.getResetButton().classList.remove("invisible");
             return true;
         } else {
             console.log("keep playing the game");
@@ -119,10 +117,8 @@ const gameboardModule = (function() {
             if (!tie) break;
         }
         if (tie) {
-            gameControllerModule.getResultsBox().style.width = "250px";
             gameControllerModule.getOutcome().classList.remove("invisible");
             gameControllerModule.getOutcome().textContent = "It's a tie";
-            gameControllerModule.getResetButton().classList.remove("invisible");
             console.log("It's a tie");
             return true;
         }
@@ -137,7 +133,20 @@ const gameboardModule = (function() {
                 allSquares.forEach((square) => {
                     square.textContent = "";
                     square.classList.remove("selected");
+                    /*
+                    square.addEventListener("mouseenter", () => {
+                        square.classList.remove("active-hover");
+                    });
+                    */
                 });
+                /*
+                allNotBottomSquares.forEach((square) => {
+                    square.classList.remove("active-not-bottom");
+                });
+                allNotRightSquares.forEach((square) => {
+                    square.classList.remove("active-not-right");
+                });
+                */
             }
         }
     }
@@ -175,10 +184,12 @@ const gameControllerModule = (function(){
     let gameOver = false;
 
 
+    const resetButton = document.getElementById("reset-button");
+    const newPlayersButton = document.getElementById("new-players");
+
     const resultsBox =document.getElementById("results");
     const startButton = document.getElementById("start-button");
     const outcome = document.getElementById("outcome");
-    const resetButton = document.getElementById("reset-button");
 
     const startPopup = document.getElementById("start-modal");
     const submitButton = document.getElementById("submit-button");
@@ -249,7 +260,8 @@ const gameControllerModule = (function(){
                         console.log(`Player 2: ${playerTwo.detail()}`);
                         startPopup.classList.remove("flex");
                         startPopup.classList.add("invisible");
-                        resultsBox.style.width = "10px";
+                        resetButton.classList.remove("invisible");
+                        newPlayersButton.classList.remove("invisible")
                         playerOneStats.classList.remove("invisible");
                         playerTwoStats.classList.remove("invisible");
                         displayPlayerOneName.textContent = `${playerOne.name}`;
@@ -333,8 +345,9 @@ const gameControllerModule = (function(){
         resetGame();
         outcome.textContent = "";
         outcome.classList.add("invisible");
-        resetButton.classList.add("invisible");
-        startButton.classList.remove("invisible");
+        playerOneStats.classList.remove("invisible");
+        playerTwoStats.classList.remove("invisible");
+        playerOneStats.classList.add("in-play");
     });
 
     return {

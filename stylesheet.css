@@ -96,6 +96,7 @@ input, select {
 }
 
 #submit-button {
+    font-size: 2rem;
     background-color: orchid;
     color: white;
     align-self: center;
@@ -141,33 +142,7 @@ input, select {
     background-color: rgba(153, 50, 204, 0.50);
 }
 
-#game-controller {
-    width: 100%;
-    height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    padding: var(--padding);
-    background-color: var(--black-transparent);
-}
-
-#results {
-    width: 250px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#outcome {
-    font-size: 3rem;
-    font-weight: bold;
-    color: yellow;
-    text-shadow: 2px 2px 10px yellow;
-}
-
 button {
-    font-size: 2rem;
     font-weight: bold;
     border-radius: 10px;
     padding: var(--padding);
@@ -179,21 +154,66 @@ button:hover {
     box-shadow: 1px 1px 10px white, -1px -1px 10px white, 0 1px 10px white, 1px 0 10px white;
 }
 
+#altering-buttons {
+    height: 40px;
+    display: flex;
+    gap: 50px;
+}
+
+.alter-play-button {
+    font-size: 1.25rem;
+    color: darkorchid;
+    background-color: rgb(255, 129, 251);
+}
+
+#game-controller {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: var(--padding);
+    background-color: var(--black-transparent);
+}
+
+#results {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.results-shrink {
+    width: 50px;
+}
+
 #start-button {
+    font-size: 2rem;
     color: yellow;
     background-image: linear-gradient(300deg, darkmagenta, deeppink, orange, gold);
 }
 
-#reset-button {
-    color: white;
-    background-color: orchid;
+#outcome {
+    font-size: 3rem;
+    font-weight: bold;
+    color: yellow;
+    text-shadow: 2px 2px 10px yellow;
 }
 
 .stats {
-    width: 200px;
     color: white;
     text-align: center;
     border-radius: 10px;
+    padding: 0 var(--padding);
+}
+
+#one-stats {
+    margin-right: 15px;
+}
+
+#two-stats {
+    margin-left: 15px;
 }
 
 .in-play {
