@@ -372,6 +372,7 @@ const gameControllerModule = (function(){
         playerOneStats.classList.remove("invisible");
         playerTwoStats.classList.remove("invisible");
         playerOneStats.classList.add("in-play");
+        playerTwoStats.classList.remove("in-play");
     }
 
     resetButton.addEventListener("click", () => {
