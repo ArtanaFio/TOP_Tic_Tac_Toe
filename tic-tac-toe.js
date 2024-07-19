@@ -182,6 +182,10 @@ const gameControllerModule = (function(){
     let playerTwo;
     let toggle = false;
     let gameOver = false;
+    let playerOneName;
+    let playerTwoName;
+    let playerOneSymbol;
+    let playerTwoSymbol;
 
 
     const resetButton = document.getElementById("reset-button");
@@ -221,22 +225,32 @@ const gameControllerModule = (function(){
         return playerTwoStats;
     }
 
-    function startGame() {
-
-        startButton.addEventListener("click", () => {
-            startButton.classList.add("invisible");
-            startPopup.classList.remove("invisible");
-            startPopup.classList.add("flex");        
-        })
+    startButton.addEventListener("click", () => {
+        startButton.classList.add("invisible");
+        startPopup.classList.remove("invisible");
+        startPopup.classList.add("flex");        
+    })
     
+    newPlayersButton.addEventListener("click", () => {
+        document.getElementById("player-one-name").value = "";
+        document.getElementById("player-two-name").value = "";
+        document.getElementById("player-one-symbol").selectedIndex = 0;
+        document.getElementById("player-two-symbol").selectedIndex = 0;
+        playerOneStats.classList.add("invisible");
+        playerTwoStats.classList.add("invisible");
+        startPopup.classList.remove("invisible");
+        startPopup.classList.add("flex");     
+    })
+
+    function startGame() {
         return new Promise((resolve, reject) => {
             submitButton.addEventListener("click", (event) => {
                 event.preventDefault();
 
-                const playerOneName = document.getElementById("player-one-name").value;
-                const playerTwoName = document.getElementById("player-two-name").value;
-                const playerOneSymbol = document.getElementById("player-one-symbol").value;
-                const playerTwoSymbol = document.getElementById("player-two-symbol").value;
+                playerOneName = document.getElementById("player-one-name").value;
+                playerTwoName = document.getElementById("player-two-name").value;
+                playerOneSymbol = document.getElementById("player-one-symbol").value;
+                playerTwoSymbol = document.getElementById("player-two-symbol").value;
 
                 if (playerOneName !== "" && playerTwoName !== "" && playerOneSymbol !== "" && playerTwoSymbol !== "") {
                     if (playerOneSymbol !== playerTwoSymbol) {
@@ -271,6 +285,7 @@ const gameControllerModule = (function(){
                         currentPlayer = playerOne;
                         playerOneStats.classList.add("in-play");
                         resolve({ playerOne, playerTwo });
+                        resetGame();
                     } else {
                         alert("Players cannot use the same symbol");
                     }
@@ -339,15 +354,16 @@ const gameControllerModule = (function(){
         toggle = false;
         gameOver = false;
         console.log(`You've reset the game and ${currentPlayer.name} is starting the new game.`);
-    }
-
-    resetButton.addEventListener("click", () => {
-        resetGame();
         outcome.textContent = "";
         outcome.classList.add("invisible");
         playerOneStats.classList.remove("invisible");
         playerTwoStats.classList.remove("invisible");
         playerOneStats.classList.add("in-play");
+    }
+
+    resetButton.addEventListener("click", () => {
+        resetGame();
+        
     });
 
     return {
