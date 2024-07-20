@@ -198,6 +198,10 @@ const gameControllerModule = (function(){
     const startPopup = document.getElementById("start-modal");
     const submitButton = document.getElementById("submit-button");
     const cancelButton = document.getElementById("cancel");
+    const firstNameInput = document.getElementById("player-one-name");
+    const secondNameInput = document.getElementById("player-two-name");
+    const firstSymbolInput = document.getElementById("player-one-symbol");
+    const secondSymbolInput = document.getElementById("player-two-symbol");
 
     const playerOneStats = document.getElementById("one-stats");
     const playerTwoStats = document.getElementById("two-stats");
@@ -260,10 +264,10 @@ const gameControllerModule = (function(){
             submitButton.addEventListener("click", (event) => {
                 event.preventDefault();
 
-                playerOneName = document.getElementById("player-one-name").value;
-                playerTwoName = document.getElementById("player-two-name").value;
-                playerOneSymbol = document.getElementById("player-one-symbol").value;
-                playerTwoSymbol = document.getElementById("player-two-symbol").value;
+                playerOneName = firstNameInput.value;
+                playerTwoName = secondNameInput.value;
+                playerOneSymbol = firstSymbolInput.value;
+                playerTwoSymbol = secondSymbolInput.value;
 
                 if (playerOneName !== "" && playerTwoName !== "" && playerOneSymbol !== "" && playerTwoSymbol !== "") {
                     if (playerOneSymbol !== playerTwoSymbol) {
